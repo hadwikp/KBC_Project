@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KBC Login</title>
+  <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto:500" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #222;
+      background: radial-gradient(circle, #6f40ec 0%, #1d0f52 100%);
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page-container {
+      display: flex;
+      width: 90%;
+      max-width: 1000px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Logo Styles */
+    .logo-container {
+      width: 450px;
+      height: 450px;
+      position: relative;
+    }
+
+    .logo {
+      background-color: #390F4E;
+      border-radius: 50%;
+      box-shadow: 0px 0px 20px 8px #34C6F6;
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+      cursor: pointer;
+    }
+
+    .mainHeading {
+      font-family: "Audiowide", cursive;
+      font-size: 60px;
+      width: 100%;
+      text-align: center;
+      text-transform: uppercase;
+      color: #fff;
+      position: absolute;
+      top: calc(50% - 36px);
+      text-shadow: -1px 1px 0 #000, -1px -1px 0 #000;
+    }
+
+    .rings {
+      transform-style: preserve-3d;
+      position: absolute;
+      top: 35px;
+      left: 35px;
+      border: 4px solid #BCD8DA;
+      border-radius: 50%;
+      padding: 10px;
+      background-color: #242343;
+      -webkit-animation: rotate 100s linear infinite;
+              animation: rotate 100s linear infinite;
+    }
+
+    .ring {
+      position: absolute;
+      top: 8px;
+      left: 158px;
+    }
+    .ring:nth-of-type(1) { transform: rotate(10deg); }
+    .ring:nth-of-type(2) { transform: rotate(20deg); }
+    .ring:nth-of-type(3) { transform: rotate(30deg); }
+    .ring:nth-of-type(4) { transform: rotate(40deg); }
+    .ring:nth-of-type(5) { transform: rotate(50deg); }
+    .ring:nth-of-type(6) { transform: rotate(60deg); }
+    .ring:nth-of-type(7) { transform: rotate(70deg); }
+    .ring:nth-of-type(8) { transform: rotate(80deg); }
+    .ring:nth-of-type(9) { transform: rotate(90deg); }
+    .ring:nth-of-type(10) { transform: rotate(100deg); }
+    .ring:nth-of-type(11) { transform: rotate(110deg); }
+    .ring:nth-of-type(12) { transform: rotate(120deg); }
+    .ring:nth-of-type(13) { transform: rotate(130deg); }
+    .ring:nth-of-type(14) { transform: rotate(140deg); }
+    .ring:nth-of-type(15) { transform: rotate(150deg); }
+    .ring:nth-of-type(16) { transform: rotate(160deg); }
+    .ring:nth-of-type(17) { transform: rotate(170deg); }
+    .ring:nth-of-type(18) { transform: rotate(180deg); }
+
+    .rin {
+      width: 50px;
+      height: 350px;
+      border: 2px solid #5588cc;
+      border-radius: 50%;
+    }
+
+    .ring:nth-child(odd) .rin {
+      border: 2px solid #D4AF37;
+    }
+
+    .border {
+      width: 320px;
+      height: 320px;
+      margin: 7px;
+      border: 8px solid #34C6F6;
+      border-radius: 50%;
+    }
+
+    .rs {
+      font-family: "Roboto", sans-serif;
+      position: absolute;
+      font-size: 140px;
+      color: #EDB82E;
+      font-weight: 500;
+      top: 0px;
+      padding-top: 210px;
+      height: calc(100% - 210px);
+      left: 150px;
+      background: -webkit-linear-gradient(#eee, #faff00, #b98600);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: black;
+    }
+    .rupee-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .rupee-container .rs:nth-child(1) { transform: rotate(60deg); }
+    .rupee-container .rs:nth-child(2) { transform: rotate(120deg); }
+    .rupee-container .rs:nth-child(3) { transform: rotate(180deg); }
+    .rupee-container .rs:nth-child(4) { transform: rotate(240deg); }
+    .rupee-container .rs:nth-child(5) { transform: rotate(300deg); }
+    .rupee-container .rs:nth-child(6) { transform: rotate(360deg); }
+
+    .diamond {
+      height: 15px;
+      width: 15px;
+      position: absolute;
+      background-color: #EDB82E;
+      transform: rotate(45deg);
+    }
+
+    .diamond:nth-child(2) {
+      top: 150px;
+      left: 22px;
+    }
+
+    .diamond:nth-child(3) {
+      top: 150px;
+      right: 22px;
+    }
+
+    .diamond:nth-child(4) {
+      bottom: 150px;
+      left: 22px;
+    }
+
+    .diamond:nth-child(5) {
+      bottom: 150px;
+      right: 22px;
+    }
+
+    .subHeading1 {
+      position: absolute;
+      top: 80px;
+      left: 0px;
+      width: 100px;
+      border-radius: 50%;
+      transform: rotate(-60deg);
+    }
+    .subHeading1 .char {
+      transform-origin: bottom center;
+      height: 225px;
+    }
+    .subHeading1 .char:nth-of-type(1) { transform: rotate(10deg); }
+    .subHeading1 .char:nth-of-type(2) { transform: rotate(20deg); }
+    .subHeading1 .char:nth-of-type(3) { transform: rotate(30deg); }
+    .subHeading1 .char:nth-of-type(4) { transform: rotate(40deg); }
+    .subHeading1 .char:nth-of-type(5) { transform: rotate(50deg); }
+    .subHeading1 .char:nth-of-type(6) { transform: rotate(60deg); }
+    .subHeading1 .char:nth-of-type(7) { transform: rotate(70deg); }
+    .subHeading1 .char:nth-of-type(8) { transform: rotate(80deg); }
+    .subHeading1 .char:nth-of-type(9) { transform: rotate(90deg); }
+    .subHeading1 .char:nth-of-type(10) { transform: rotate(100deg); }
+    .subHeading1 .char:nth-of-type(11) { transform: rotate(110deg); }
+
+    .subHeading2 {
+      position: absolute;
+      top: 225px;
+      left: 220px;
+      width: 0px;
+      border-radius: 50%;
+      transform: rotate(60deg);
+    }
+    .subHeading2 .char {
+      transform-origin: top center;
+      padding-top: 180px;
+    }
+    .subHeading2 .char:nth-of-type(1) { transform: rotate(-10deg); }
+    .subHeading2 .char:nth-of-type(2) { transform: rotate(-20deg); }
+    .subHeading2 .char:nth-of-type(3) { transform: rotate(-30deg); }
+    .subHeading2 .char:nth-of-type(4) { transform: rotate(-40deg); }
+    .subHeading2 .char:nth-of-type(5) { transform: rotate(-50deg); }
+    .subHeading2 .char:nth-of-type(6) { transform: rotate(-60deg); }
+    .subHeading2 .char:nth-of-type(7) { transform: rotate(-70deg); }
+    .subHeading2 .char:nth-of-type(8) { transform: rotate(-80deg); }
+    .subHeading2 .char:nth-of-type(9) { transform: rotate(-90deg); }
+    .subHeading2 .char:nth-of-type(10) { transform: rotate(-100deg); }
+    .subHeading2 .char:nth-of-type(11) { transform: rotate(-110deg); }
+
+    .char {
+      color: #fff;
+      font: 26px Monaco, MonoSpace;
+      position: absolute;
+      width: 20px;
+      left: 0;
+      top: 0;
+    }
+
+    @-webkit-keyframes rotate {
+      100% { transform: rotateZ(2turn); }
+    }
+    @keyframes rotate {
+      100% { transform: rotateZ(2turn); }
+    }
+
+    /* Login Container Styles */
+    .login-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      color: black;
+      position: relative;
+      overflow: hidden;
+      display: none; /* Hidden initially */
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .login-container.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .tab {
+      cursor: pointer;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-bottom: 2px solid transparent;
+      transition: border-bottom 0.3s ease;
+    }
+    .tab.active {
+      border-bottom: 2px solid #0056b3;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid gray;
+    }
+    button {
+      background: #0056b3;
+      color: white;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    /* Enter Button Styles */
+    .enter-btn {
+      background: #390F4E;
+      color: white;
+      padding: 20px 30px;
+      width : 250px;
+      text-align: "center";
+      font-size: 1.5em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .enter-btn:hover {
+      background: #8d9c03;
+    }
+
+    /* Responsive design */
+    @media (max-width: 1200px) {
+      .page-container {
+        flex-direction: column;
+        gap: 40px;
+      }
+      .logo-container {
+        transform: scale(0.8);
+        height: 360px;
+      }
+    }
+    @media (max-width: 600px) {
+      .logo-container {
+        transform: scale(0.6);
+        height: 270px;
+      }
+    }
+  </style>
+  <script>
+    function toggleForms() {
+      var role = document.getElementById("role").value;
+      if (role === "admin") {
+        document.getElementById("admin-form").style.display = "block";
+        document.getElementById("user-form").style.display = "none";
+      } else {
+        document.getElementById("admin-form").style.display = "none";
+        document.getElementById("user-form").style.display = "block";
+      }
+      // Update active tab style
+      if(role === "admin"){
+        document.getElementById("admin-tab").classList.add("active");
+        document.getElementById("user-tab").classList.remove("active");
+      } else {
+        document.getElementById("user-tab").classList.add("active");
+        document.getElementById("admin-tab").classList.remove("active");
+      }
+    }
+
+    function showLoginContainer() {
+      var loginContainer = document.getElementById("login-container");
+      loginContainer.classList.add("show");
+      document.getElementById("enter-btn").style.display = "none";
+    }
+
+    window.onload = function() {
+      // Set default role to user in hidden select element
+      document.getElementById("role").value = "user";
+      toggleForms(); // ensure correct form is displayed on page load
+    };
+  </script>
+</head>
+<body>
+  <div class="page-container">
+    <!-- Logo Container -->
+    <div class="logo-container">
+      <div class="logo">
+        <div class="rings">
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="ring"><div class="rin"></div></div>
+          <div class="border"></div>
+          <div class="rupee-container">
+            <div class="rs">&#8377;</div>
+            <div class="rs">&#8377;</div>
+            <div class="rs">&#8377;</div>
+            <div class="rs">&#8377;</div>
+            <div class="rs">&#8377;</div>
+            <div class="rs">&#8377;</div>
+          </div>
+        </div>
+        <div class="diamond"></div>
+        <div class="diamond"></div>
+        <div class="diamond"></div>
+        <div class="diamond"></div>
+        <div class="mainHeading">Crorepati</div>
+        <div class="subHeading1">
+          <div class="char">K</div>
+          <div class="char">A</div>
+          <div class="char">U</div>
+          <div class="char">N</div>
+          <div class="char">&nbsp;</div>
+          <div class="char">B</div>
+          <div class="char">A</div>
+          <div class="char">N</div>
+          <div class="char">E</div>
+          <div class="char">G</div>
+          <div class="char">A</div>
+        </div>
+        <div class="subHeading2">
+          <div class="char">K</div>
+          <div class="char">A</div>
+          <div class="char">U</div>
+          <div class="char">N</div>
+          <div class="char">&nbsp;</div>
+          <div class="char">B</div>
+          <div class="char">A</div>
+          <div class="char">N</div>
+          <div class="char">E</div>
+          <div class="char">G</div>
+          <div class="char">A</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enter Button (shown initially) -->
+    <button class="enter-btn" id="enter-btn" onclick="showLoginContainer()">Enter</button>
+
+    <!-- Login Container (hidden initially) -->
+    <div class="login-container" id="login-container">
+      <h2>KBC Login</h2>
+      <!-- Tab Interface -->
+      <div class="tabs">
+        <div class="tab active" id="user-tab" onclick="document.getElementById('role').value='user'; toggleForms();">User</div>
+        <div class="tab" id="admin-tab" onclick="document.getElementById('role').value='admin'; toggleForms();">Administrator</div>
+      </div>
+      <!-- Hidden select to preserve existing functionality -->
+      <select id="role" style="display:none;">
+        <option value="user">User</option>
+        <option value="admin">Administrator</option>
+      </select>
+      <!-- User Login Form -->
+      <form action="{{ url_for('user_login') }}" method="post" id="user-form">
+        <label>Name:</label>
+        <input type="text" name="name" placeholder="Name" required>
+        <label>Email Address:</label>
+        <input type="email" name="email" placeholder="Email Address" required>
+        <label>Date of Birth:</label>
+        <input type="date" name="dob" required>
+        <label>Qualification:</label>
+        <select name="qualification" required>
+          <option value="">Select Qualification</option>
+          <option value="10th Pass">10th Pass</option>
+          <option value="12th Pass">12th Pass</option>
+          <option value="Graduate">Graduate</option>
+          <option value="Not Literate">Not Literate</option>
+        </select>
+        <button type="submit">Login as User</button>
+      </form>
+      <!-- Admin Login Form -->
+      <form action="{{ url_for('admin_login') }}" method="post" id="admin-form" style="display:none;">
+        <label>Admin ID:</label>
+        <input type="text" name="admin_id" placeholder="Admin ID" required>
+        <label>Password:</label>
+        <input type="password" name="admin_password" placeholder="Password" required>
+        <button type="submit">Login as Admin</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
