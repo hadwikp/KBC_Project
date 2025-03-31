@@ -63,6 +63,11 @@
       pointer-events: none;
       background-color: #004d00;
     }
+    .lifeline:hover {
+      background-color: #00b300; /* Lighter green on hover */
+      box-shadow: 0 0 10px #00ff00;
+      transform: scale(1.05);
+    }
     /* Timer Container */
     .timer-container {
       display: flex;
@@ -117,6 +122,14 @@
       width: 100%;
       margin-bottom: 20px;
     }
+    .question-container:hover{
+      background-color: #6a0dad; /* Darker purple on hover */
+      box-shadow: 0 0 20px #9370db;
+    }
+    .question-container:active {
+      transform: scale(0.98);
+      transition: transform 0.1s;
+    }
     .question-box {
       background-color: #4b0082; /* Purple fill */
       padding: 20px;
@@ -159,11 +172,13 @@
     .option-btn:hover {
       background-color: #9932cc;
       color: #fff;
+      transform : scale(1.04);
     }
     .option-btn.disabled {
-      background-color: #555;
+      /* background-color: #555;
       color: #999;
-      cursor: not-allowed;
+      cursor: not-allowed; */
+      display: none;
     }
     .buttons-container {
       width: 100%;
