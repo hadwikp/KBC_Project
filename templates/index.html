@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KBC Login</title>
   <link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto:500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
@@ -275,8 +276,16 @@
       border-bottom: 2px solid #0056b3;
       font-weight: bold;
     }
+    h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            text-align: center;
+            color: #100f0f; /* KBC-style golden color */
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    }
     input, select, button {
-      width: 100%;
+      width: 90%;
       padding: 10px;
       margin: 10px 0;
       border-radius: 5px;
@@ -343,7 +352,7 @@
         document.getElementById("admin-tab").classList.remove("active");
       }
     }
-
+    
     function showLoginContainer() {
       var loginContainer = document.getElementById("login-container");
       loginContainer.classList.add("show");
@@ -430,7 +439,7 @@
 
     <!-- Login Container (hidden initially) -->
     <div class="login-container" id="login-container">
-      <h2>KBC Login</h2>
+      <h1>KBC Login</h1>
       <!-- Tab Interface -->
       <div class="tabs">
         <div class="tab active" id="user-tab" onclick="document.getElementById('role').value='user'; toggleForms();">User</div>
