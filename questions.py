@@ -4,7 +4,7 @@ import mysql.connector
 # MySQL connection configuration
 config = {
     'user': 'root',
-    'password': 'Hadwik@2006',   # Update with your credentials
+    'password': 'your_password',   # Update with your credentials
     'host': '127.0.0.1',
     'database': 'kbc_game'
 }
