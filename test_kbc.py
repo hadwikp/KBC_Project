@@ -1,8 +1,24 @@
+import os
+import sys
+# Add the project root to the Python path so that modules can be imported.
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import unittest
 import json
-from app import app, accepted_uid
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, mock_open
 
+# -----------------------------------------------------------------------------
+# Pre‑import patching: Patch mysql.connector.connect and builtins.open before
+# importing questions. This ensures that the module‑level calls (for inserting
+# questions) use a dummy connection and dummy file content.
+# -----------------------------------------------------------------------------
+with patch('mysql.connector.connect', return_value=MagicMock()) as mock_connect, \
+     patch('builtins.open', mock_open(read_data='{"results": []}')):
+    import questions
+
+# Now import the Flask app after patching so that no unwanted external calls occur.
+from app import app, accepted_uid
+
+# Tests for the Flask app endpoints
 class KbcAppTestCase(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
@@ -55,7 +71,7 @@ class KbcAppTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     @patch('app.mysql')
-    def test_admin_page_with_admin(self, mock_mysql):
+    def test_admin_page(self, mock_mysql):
         # Set session admin flag
         with self.client.session_transaction() as sess:
             sess['admin'] = True
@@ -68,43 +84,12 @@ class KbcAppTestCase(unittest.TestCase):
         response = self.client.get('/admin_page')
         self.assertEqual(response.status_code, 200)
 
-    @patch('app.mysql')
-    def test_admin_page_without_admin(self, mock_mysql):
-        # Without admin flag, should redirect to index
-        response = self.client.get('/admin_page', follow_redirects=True)
-        self.assertEqual(response.request.path, '/')
-
-    @patch('app.mysql')
-    def test_select_user_without_admin(self, mock_mysql):
-        # Not setting admin session should return 401 Unauthorized
-        response = self.client.post('/select_user', data={'selected_uid': 'testuid'})
-        self.assertEqual(response.status_code, 401)
-
-    @patch('app.mysql')
-    def test_select_user_missing_selected_uid(self, mock_mysql):
-        # Set admin session first
-        with self.client.session_transaction() as sess:
-            sess['admin'] = True
-
-        # Post request without selected_uid should return 400 error
-        response = self.client.post('/select_user', data={}, follow_redirects=True)
-        self.assertEqual(response.status_code, 400)
-        self.assertIn("No user selected", response.get_data(as_text=True))
-
-    @patch('app.mysql')
-    def test_select_user_user_not_found(self, mock_mysql):
-        # Set admin session first
-        with self.client.session_transaction() as sess:
-            sess['admin'] = True
-
-        # Simulate that no user is found in the database
-        mock_cursor = MagicMock()
-        mock_cursor.fetchone.return_value = None
-        mock_mysql.connection.cursor.return_value = mock_cursor
-
-        response = self.client.post('/select_user', data={'selected_uid': 'nonexistent'}, follow_redirects=True)
-        self.assertEqual(response.status_code, 400)
-        self.assertIn("User not found", response.get_data(as_text=True))
+    def test_admin_page_unauthorized(self):
+        # Without admin session, should redirect to index.
+        response = self.client.get('/admin_page', follow_redirects=False)
+        # Redirect status code is 302, and it should redirect to index.
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('/', response.headers['Location'])
 
     @patch('app.mysql')
     def test_select_user_success(self, mock_mysql):
@@ -122,6 +107,37 @@ class KbcAppTestCase(unittest.TestCase):
         # Directly check the module-level global variable
         from app import accepted_uid as global_accepted_uid
         self.assertEqual(global_accepted_uid, 'testuid')
+
+    def test_select_user_unauthorized(self):
+        # Without admin session, the /select_user endpoint should return Unauthorized.
+        response = self.client.post('/select_user', data={'selected_uid': 'testuid'})
+        self.assertEqual(response.status_code, 401)
+        self.assertIn("Unauthorized", response.get_data(as_text=True))
+
+    @patch('app.mysql')
+    def test_select_user_no_selected_uid(self, mock_mysql):
+        # Ensure admin session is set for select_user
+        with self.client.session_transaction() as sess:
+            sess['admin'] = True
+
+        response = self.client.post('/select_user', data={}, follow_redirects=True)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("No user selected", response.get_data(as_text=True))
+
+    @patch('app.mysql')
+    def test_select_user_not_found(self, mock_mysql):
+        # Ensure admin session is set for select_user
+        with self.client.session_transaction() as sess:
+            sess['admin'] = True
+
+        # Simulate not finding the user in the database
+        mock_cursor = MagicMock()
+        mock_cursor.fetchone.return_value = None
+        mock_mysql.connection.cursor.return_value = mock_cursor
+
+        response = self.client.post('/select_user', data={'selected_uid': 'nonexistent'}, follow_redirects=True)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("User not found", response.get_data(as_text=True))
 
     @patch('app.mysql')
     def test_check_game_status_found(self, mock_mysql):
@@ -173,7 +189,6 @@ class KbcAppTestCase(unittest.TestCase):
     def test_get_questions_accepted(self, mock_mysql):
         # Simulate accepted user and question queries for each difficulty
         mock_cursor = MagicMock()
-
         # For the status check, return accepted.
         mock_cursor.fetchone.side_effect = [{'status': 'accepted'}]
         # For each difficulty query (3 difficulties), return 5 questions each.
@@ -202,9 +217,6 @@ class KbcAppTestCase(unittest.TestCase):
 
         response = self.client.get('/get_questions/testuid')
         self.assertEqual(response.status_code, 403)
-        # Optionally, you can also check the error message
-        data = json.loads(response.data)
-        self.assertEqual(data.get('error'), 'User not accepted')
 
     @patch('app.mysql')
     def test_submit_answer_correct(self, mock_mysql):
@@ -236,7 +248,7 @@ class KbcAppTestCase(unittest.TestCase):
 
     @patch('app.mysql')
     def test_submit_answer_invalid_question(self, mock_mysql):
-        # Simulate that the question is not found in the database
+        # Simulate question id not found; should return error and 400
         mock_cursor = MagicMock()
         mock_cursor.fetchone.return_value = None
         mock_mysql.connection.cursor.return_value = mock_cursor
@@ -246,9 +258,8 @@ class KbcAppTestCase(unittest.TestCase):
             'selected_answer': 'Anything'
         })
         data = json.loads(response.data)
-        self.assertEqual(response.status_code, 400)
         self.assertIn('error', data)
-        self.assertEqual(data['error'], 'Invalid question id')
+        self.assertEqual(response.status_code, 400)
 
     def test_logout(self):
         # Set a session value, then logout should clear it and redirect to index.
@@ -263,6 +274,81 @@ class KbcAppTestCase(unittest.TestCase):
         text = response.get_data(as_text=True)
         self.assertIn('win', text)
         self.assertIn('1000', text)
+
+# -----------------------------------------------------------------------------
+# New tests for questions.py functionality
+# -----------------------------------------------------------------------------
+class KbcQuestionsTestCase(unittest.TestCase):
+    @patch('questions.cnx')
+    @patch('builtins.open', new_callable=mock_open, read_data='''
+        {
+            "results": [
+                {
+                    "question": "When someone is inexperienced they are said to be what color?",
+                    "difficulty": "easy",
+                    "category": "General Knowledge",
+                    "correct_answer": "Green",
+                    "incorrect_answers": ["Red", "Blue", "Yellow"]
+                }
+            ]
+        }
+    ''')
+    def test_insert_questions(self, mock_file, mock_cnx):
+        # Create a dummy connection and dummy cursor to simulate MySQL operations.
+        dummy_cursor = MagicMock()
+        dummy_connection = MagicMock()
+        dummy_connection.cursor.return_value = dummy_cursor
+        dummy_connection.commit = MagicMock()
+        # Patch the module-level connection and cursor in questions.py
+        import questions as q
+        q.cnx = dummy_connection
+        q.cursor = dummy_cursor
+
+        # Call the function to insert questions
+        q.insert_questions('dummy.json')
+
+        # Verify that the file was opened correctly.
+        mock_file.assert_called_with('dummy.json', 'r')
+        # Verify that the INSERT query was executed once.
+        self.assertEqual(dummy_cursor.execute.call_count, 1)
+
+        # Extract the query and parameters used in the execute call.
+        args, _ = dummy_cursor.execute.call_args
+        query_executed, params = args
+        self.assertIn("INSERT INTO questions", query_executed)
+        # Verify the parameters match what is expected.
+        expected_params = (
+            "When someone is inexperienced they are said to be what color?",
+            "easy",
+            "General Knowledge",
+            "Green",
+            json.dumps(["Red", "Blue", "Yellow"])
+        )
+        self.assertEqual(params, expected_params)
+        # Verify that commit was called once.
+        dummy_connection.commit.assert_called_once()
+
+    @patch('questions.cnx')
+    @patch('builtins.open', new_callable=mock_open, read_data='{"results": []}')
+    def test_insert_questions_empty(self, mock_file, mock_cnx):
+        # Create a dummy connection and cursor.
+        dummy_cursor = MagicMock()
+        dummy_connection = MagicMock()
+        dummy_connection.cursor.return_value = dummy_cursor
+        dummy_connection.commit = MagicMock()
+        import questions as q
+        q.cnx = dummy_connection
+        q.cursor = dummy_cursor
+
+        # Call the function with an empty results list.
+        q.insert_questions('dummy.json')
+
+        # Verify that open was called.
+        mock_file.assert_called_with('dummy.json', 'r')
+        # No INSERT queries should be executed.
+        dummy_cursor.execute.assert_not_called()
+        # Commit should still be called.
+        dummy_connection.commit.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()

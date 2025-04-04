@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Game Over - KBC++</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #001f3f;
-      color: #fff;
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
@@ -15,29 +14,50 @@
       justify-content: center;
       height: 100vh;
       margin: 0;
-    }
-    .container {
+      background: radial-gradient(circle, #3e18a7 5%, #1d0f52 100%);
+      background-size: cover;
       text-align: center;
-      padding: 20px;
-      background-color: #012a4a;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 15px #00bfff;
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.5); /* Blue glow */
+      width: 90%;
+      max-width: 400px;
+      color: black;
     }
+
     h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 35px;
+      font-weight: 700;
       margin-bottom: 20px;
+      color: #100f0f; /* Deep rich black */
+      text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
     }
+
     p {
-      font-size: 24px;
+      font-size: 1.2em;
       margin-bottom: 20px;
+      color: #333;
     }
+
     .logout-button {
       font-size: 20px;
       padding: 10px 20px;
-      background-color: red;
+      background-color: #d62828; /* Rich red */
       border: none;
       color: #fff;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-button:hover {
+      background-color: #a71d1d;
     }
   </style>
 </head>

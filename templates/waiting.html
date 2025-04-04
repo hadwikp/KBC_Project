@@ -4,39 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Waiting Room</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: radial-gradient(circle, #3e18a7 5%, #1d0f52 100%);
-      background-size: cover;
-      margin: 0;
-      text-align: center;
-    }
-    h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 35px;
-            font-weight: 700;
-            text-align: center;
-            color: #100f0f; /* KBC-style golden color */
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-    }
-    .container {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-      width: 90%;
-      max-width: 400px;
-      color: black;
-    }
-    h2 { margin-bottom: 20px; }
-    p { font-size: 1.2em; }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/waiting.css') }}">
 </head>
 <body>
   <div class="container">
