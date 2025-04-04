@@ -15,7 +15,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'  # Use dictionary cursor for quer
 
 mysql = MySQL(app)
 
-# Global variable to store the accepted user's unique ID
+#Global variable to store the accepted user's unique ID
 accepted_uid = None
 
 @app.route('/')
@@ -143,12 +143,10 @@ def get_questions(uid):
         return jsonify({'error': 'User not accepted'}), 403
 
     questions = []
-    # Get 5 random questions per difficulty in order: easy, medium, hard.
     for diff in ['easy', 'medium', 'hard']:
         cursor.execute("SELECT id, question, difficulty, category, correct_answer, incorrect_answers FROM questions WHERE difficulty = %s ORDER BY RAND() LIMIT 5", (diff,))
         questions.extend(cursor.fetchall())
     cursor.close()
-    # Return the questions in the order: first 5 (easy), next 5 (medium), last 5 (hard)
     return jsonify({'questions': questions})
 
 @app.route('/submit_answer', methods=['POST'])

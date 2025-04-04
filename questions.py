@@ -32,7 +32,7 @@ def insert_questions(file_path):
             cursor.execute(query, (question, difficulty, category, correct_answer, incorrect_answers))
     cnx.commit()
 
-# Insert questions from all files
+
 insert_questions('questions/easy.json')
 insert_questions('questions/medium.json')
 insert_questions('questions/hard.json')
