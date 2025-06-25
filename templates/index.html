@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +17,7 @@
         document.getElementById("user-form").style.display = "block";
       }
       // Update active tab style
-      if(role === "admin"){
+      if (role === "admin") {
         document.getElementById("admin-tab").classList.add("active");
         document.getElementById("user-tab").classList.remove("active");
       } else {
@@ -24,50 +25,87 @@
         document.getElementById("admin-tab").classList.remove("active");
       }
     }
-    
+
     function showLoginContainer() {
-  const btn = document.getElementById("enter-btn");
-  btn.style.transition = "transform 0.5s ease, opacity 0.5s ease";
-  btn.style.transform = "scale(0.8)";
-  btn.style.opacity = "0";
+      const btn = document.getElementById("enter-btn");
+      btn.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+      btn.style.transform = "scale(0.8)";
+      btn.style.opacity = "0";
 
-  setTimeout(() => {
-    btn.style.display = "none";
-    document.getElementById("login-container").classList.add("show");
-  }, 500);
-}
+      setTimeout(() => {
+        btn.style.display = "none";
+        document.getElementById("login-container").classList.add("show");
+      }, 500);
+    }
 
-    window.onload = function() {
+    window.onload = function () {
       // Set default role to user in hidden select element
       document.getElementById("role").value = "user";
       toggleForms(); // ensure correct form is displayed on page load
     };
   </script>
 </head>
+
 <body>
   <div class="page-container">
     <!-- Logo Container -->
     <div class="logo-container">
       <div class="logo">
         <div class="rings">
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
-          <div class="ring"><div class="rin"></div></div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
+          <div class="ring">
+            <div class="rin"></div>
+          </div>
           <div class="border"></div>
           <div class="rupee-container">
             <div class="rs">&#8377;</div>
@@ -120,8 +158,10 @@
       <h1>KBC Login</h1>
       <!-- Tab Interface -->
       <div class="tabs">
-        <div class="tab active" id="user-tab" onclick="document.getElementById('role').value='user'; toggleForms();">User</div>
-        <div class="tab" id="admin-tab" onclick="document.getElementById('role').value='admin'; toggleForms();">Administrator</div>
+        <div class="tab active" id="user-tab" onclick="document.getElementById('role').value='user'; toggleForms();">
+          User</div>
+        <div class="tab" id="admin-tab" onclick="document.getElementById('role').value='admin'; toggleForms();">
+          Administrator</div>
       </div>
       <!-- Hidden select to preserve existing functionality -->
       <select id="role" style="display:none;">
@@ -157,4 +197,5 @@
     </div>
   </div>
 </body>
+
 </html>

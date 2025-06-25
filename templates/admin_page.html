@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_page.css') }}">
 </head>
+
 <body>
   <div class="container">
     <h2>Admin Dashboard</h2>
@@ -23,7 +25,8 @@
         {% for user in users %}
         <tr>
           <td>
-            <form action="{{ url_for('select_user') }}" method="post" style="display:inline;" onsubmit="notifyUser('{{ user.uid }}')">
+            <form action="{{ url_for('select_user') }}" method="post" style="display:inline;"
+              onsubmit="notifyUser('{{ user.uid }}')">
               <input type="hidden" name="selected_uid" value="{{ user.uid }}">
               <button type="submit">Select</button>
             </form>
@@ -47,4 +50,5 @@
     }
   </script>
 </body>
+
 </html>

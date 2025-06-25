@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Waiting Room</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/waiting.css') }}">
 </head>
+
 <body>
   <div class="container">
     <h2>Waiting Room</h2>
     <p>Please wait while the admin selects a player...</p>
   </div>
-  
+
   <script>
     // Use the UID passed to the template for polling.
     const currentUserUid = "{{ uid }}";
 
     // Poll every 3 seconds to check if the game status has changed.
-    setInterval(function() {
+    setInterval(function () {
       fetch(`/check_game_status/${currentUserUid}`)
         .then(response => response.json())
         .then(data => {
@@ -32,4 +34,5 @@
     }, 3000);
   </script>
 </body>
+
 </html>

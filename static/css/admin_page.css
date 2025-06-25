@@ -1,89 +1,109 @@
 @import url('https://fonts.googleapis.com/css?family=Audiowide|Roboto:500');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background: radial-gradient(circle, #3e18a7 0%, #1d0f52 100%);
-    background-size: cover;
-    margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: radial-gradient(circle, #3e18a7 0%, #1d0f52 100%);
+  background-size: cover;
+  margin: 0;
 }
+
 .logout-button {
-    background: #dc3545;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 1em;
-    display: inline-block;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .logout-button:hover {
-    background: #c82333;
-  }
+  background: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 1em;
+  display: inline-block;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background: #c82333;
+}
+
 .container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 600px;
-    text-align: center;
-    color: black;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  text-align: center;
+  color: black;
 }
+
 h2 {
-        font-family: 'Poppins', sans-serif;
-        font-size: 35px;
-        font-weight: 700;
-        text-align: center;
-        color: #100f0f; /* KBC-style golden color */
-        text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+  font-family: 'Poppins', sans-serif;
+  font-size: 35px;
+  font-weight: 700;
+  text-align: center;
+  color: #100f0f;
+  /* KBC-style golden color */
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
+
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
-th, td {
-    border: 1px solid black;
-    padding: 10px;
-    text-align: center;
+
+th,
+td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
 }
+
 th {
-    background: #0056b3;
-    color: white;
+  background: #0056b3;
+  color: white;
 }
+
 button {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
 }
+
 body {
-    animation: fadeIn 0.5s ease-in;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  tr:hover {
-    background-color: #f2f2f2;
-    transition: background-color 0.3s ease;
-  }
-  button {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
+}
+
+tr:hover {
+  background-color: #f2f2f2;
+  transition: background-color 0.3s ease;
+}
+
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

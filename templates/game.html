@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
   <div class="game-container">
     <!-- Lifelines Container -->
@@ -70,7 +72,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Modal for Audience Poll -->
   <div id="pollModal" class="modal" style="display:none;">
     <div class="modal-content">
@@ -92,8 +94,8 @@
     var timerInterval;
     var timeLeft = 60;
     var selectedOption = null;
-    
-    window.onload = function() {
+
+    window.onload = function () {
       fetch('/get_questions/' + uid)
         .then(response => response.json())
         .then(data => {
@@ -110,7 +112,7 @@
     function startTimer() {
       timeLeft = 60;
       document.getElementById('timer').textContent = timeLeft;
-      timerInterval = setInterval(function() {
+      timerInterval = setInterval(function () {
         timeLeft--;
         document.getElementById('timer').textContent = timeLeft;
         if (timeLeft <= 0) {
@@ -138,7 +140,7 @@
 
       // Update scoreboard: mark completed as grey and current as yellow
       var scoreItems = document.querySelectorAll('.score-item');
-      scoreItems.forEach(function(item) {
+      scoreItems.forEach(function (item) {
         var idx = parseInt(item.getAttribute('data-index'));
         if (idx < currentQuestionIndex) {
           item.classList.add('completed');
@@ -147,7 +149,7 @@
           item.classList.add('current');
           item.classList.remove('completed');
         } else {
-          item.classList.remove('current','completed');
+          item.classList.remove('current', 'completed');
         }
       });
 
@@ -157,7 +159,7 @@
         if (typeof options === "string") {
           options = JSON.parse(options);
         }
-      } catch(e) { }
+      } catch (e) { }
       options.push(currentQ.correct_answer);
       options = shuffleArray(options);
 
@@ -203,7 +205,7 @@
       document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
       var blinkCount = 0;
       var originalBg = selectedOption.style.backgroundColor;
-      var blinkInterval = setInterval(function() {
+      var blinkInterval = setInterval(function () {
         selectedOption.style.backgroundColor = (blinkCount % 2 === 0) ? 'yellow' : originalBg;
         blinkCount++;
         if (blinkCount === 6) {
@@ -221,23 +223,23 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question_id: currentQ.id, selected_answer: selectedOption.textContent })
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.correct) {
-          // Correct: highlight selected in green and update earnings
-          selectedOption.style.backgroundColor = 'green';
-          currentEarnings = earningsValues[currentQuestionIndex];
-          document.getElementById('earnings').textContent = 'Current Earnings: ₹' + currentEarnings;
-          setTimeout(loadNextQuestion, 1000);
-        } else {
-          // Wrong: highlight chosen option red and correct option green
-          selectedOption.style.backgroundColor = 'red';
-          highlightCorrectAnswer(currentQ.correct_answer);
-          setTimeout(function() {
-            redirectExit("Wrong answer! You lost.", currentEarnings);
-          }, 1500);
-        }
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.correct) {
+            // Correct: highlight selected in green and update earnings
+            selectedOption.style.backgroundColor = 'green';
+            currentEarnings = earningsValues[currentQuestionIndex];
+            document.getElementById('earnings').textContent = 'Current Earnings: ₹' + currentEarnings;
+            setTimeout(loadNextQuestion, 1000);
+          } else {
+            // Wrong: highlight chosen option red and correct option green
+            selectedOption.style.backgroundColor = 'red';
+            highlightCorrectAnswer(currentQ.correct_answer);
+            setTimeout(function () {
+              redirectExit("Wrong answer! You lost.", currentEarnings);
+            }, 1500);
+          }
+        });
     }
 
     function highlightCorrectAnswer(correctAnswer) {
@@ -273,7 +275,7 @@
       if (lifelinesUsed.fiftyFifty) return;
       lifelinesUsed.fiftyFifty = true;
       document.getElementById('lifeline-5050').classList.add('disabled');
-      
+
       var currentQ = questions[currentQuestionIndex];
       var correct = currentQ.correct_answer.trim().toLowerCase();
       var wrongBtns = [];
@@ -284,7 +286,7 @@
       });
       // Randomly disable two wrong options
       wrongBtns = shuffleArray(wrongBtns);
-      wrongBtns.slice(0,2).forEach(btn => {
+      wrongBtns.slice(0, 2).forEach(btn => {
         btn.disabled = true;
         btn.classList.add('disabled');
       });
@@ -292,49 +294,49 @@
 
     // Lifeline: Swap question implementation
     function useSwap() {
-    if (lifelinesUsed.swap) return;
-    lifelinesUsed.swap = true;
-    document.getElementById('lifeline-swap').classList.add('disabled');
+      if (lifelinesUsed.swap) return;
+      lifelinesUsed.swap = true;
+      document.getElementById('lifeline-swap').classList.add('disabled');
 
-    var currentQ = questions[currentQuestionIndex];
-    var currentDiff = currentQ.difficulty;
+      var currentQ = questions[currentQuestionIndex];
+      var currentDiff = currentQ.difficulty;
 
-    // Find a candidate with the same difficulty that hasn't been asked.
-    var swapCandidate = null;
-    var swapIndex = -1;
-    for (var i = currentQuestionIndex + 1; i < questions.length; i++) {
-      if (
-        questions[i].difficulty === currentDiff &&
-        !askedQuestionIds.includes(questions[i].id)
-      ) {
-        swapCandidate = questions[i];
-        swapIndex = i;
-        break;
+      // Find a candidate with the same difficulty that hasn't been asked.
+      var swapCandidate = null;
+      var swapIndex = -1;
+      for (var i = currentQuestionIndex + 1; i < questions.length; i++) {
+        if (
+          questions[i].difficulty === currentDiff &&
+          !askedQuestionIds.includes(questions[i].id)
+        ) {
+          swapCandidate = questions[i];
+          swapIndex = i;
+          break;
+        }
+      }
+
+      if (swapCandidate) {
+        // Mark both the current question and the swap candidate as used.
+        askedQuestionIds.push(currentQ.id);
+        askedQuestionIds.push(swapCandidate.id);
+
+        // Replace the current question with the swap candidate.
+        questions[currentQuestionIndex] = swapCandidate;
+        // Remove the swap candidate from its original location so it won't be used later.
+        questions.splice(swapIndex, 1);
+
+        loadQuestion();
+      } else {
+        alert("No swap question available!");
       }
     }
-
-  if (swapCandidate) {
-    // Mark both the current question and the swap candidate as used.
-    askedQuestionIds.push(currentQ.id);
-    askedQuestionIds.push(swapCandidate.id);
-
-    // Replace the current question with the swap candidate.
-    questions[currentQuestionIndex] = swapCandidate;
-    // Remove the swap candidate from its original location so it won't be used later.
-    questions.splice(swapIndex, 1);
-
-    loadQuestion();
-  } else {
-    alert("No swap question available!");
-  }
-}
 
     // Lifeline: Audience Poll implementation using Chart.js
     function usePoll() {
       if (lifelinesUsed.poll) return;
       lifelinesUsed.poll = true;
       document.getElementById('lifeline-poll').classList.add('disabled');
-      
+
       var currentQ = questions[currentQuestionIndex];
       var correct = currentQ.correct_answer.trim().toLowerCase();
       var optionButtons = document.querySelectorAll('.option-btn');
@@ -344,8 +346,8 @@
       for (var i = 0; i < 4; i++) {
         nums.push(Math.random());
       }
-      var sum = nums.reduce((a,b)=>a+b,0);
-      percentages = nums.map(n => Math.round((n/sum)*100));
+      var sum = nums.reduce((a, b) => a + b, 0);
+      percentages = nums.map(n => Math.round((n / sum) * 100));
       // Adjust so that the option corresponding to the correct answer gets the highest percentage
       var maxVal = Math.max(...percentages);
       var correctIndex = -1;
@@ -362,14 +364,14 @@
         percentages[highestIndex] = currentCorrectVal;
       }
       // Ensure total sums to 100 (adjust last value if necessary)
-      var total = percentages.reduce((a,b)=>a+b,0);
-      if(total !== 100) {
-        percentages[percentages.length-1] += 100 - total;
+      var total = percentages.reduce((a, b) => a + b, 0);
+      if (total !== 100) {
+        percentages[percentages.length - 1] += 100 - total;
       }
       // Show modal with pie chart
       showPollModal(optionButtons, percentages);
     }
-    
+
     function showPollModal(optionButtons, percentages) {
       var labels = [];
       optionButtons.forEach(btn => {
@@ -382,7 +384,7 @@
           labels: labels,
           datasets: [{
             data: percentages,
-            backgroundColor: ['#00eaff','#00bfff','#007acc','#005fa3']
+            backgroundColor: ['#00eaff', '#00bfff', '#007acc', '#005fa3']
           }]
         },
         options: {
@@ -394,10 +396,11 @@
       });
       document.getElementById('pollModal').style.display = 'flex';
     }
-    
+
     function closePoll() {
       document.getElementById('pollModal').style.display = 'none';
     }
   </script>
 </body>
+
 </html>
